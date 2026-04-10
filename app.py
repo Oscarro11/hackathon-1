@@ -14,6 +14,11 @@ st.title("Análisis de notas de estudiante")
 
 file = st.file_uploader("Elegir archivo de notas", type="xlsx")
 
+# ---------- Manejo del estado ----------
+# Streamlit se reinicia cada vez que interactúas,
+# por eso usamos session_state para guardar datos
+# Guardará tablas del Excel
+# Guardará datos procesados
 
 # ---------- State management ----------
 if "tables" not in st.session_state:
@@ -30,7 +35,8 @@ if file is not None:
 
     tables = st.session_state.tables
     dataframes = st.session_state.dataframes
-
+ # Si se encontraron tablas en el Excel
+    #permite seleccionar la materia a la cual queremos analizar de la tabla de datos esto lo hacemos por medio de diccionarios
     if tables:
         selected_table = st.sidebar.selectbox(
             "Elige la clase para la cual hacer el análisis",
@@ -42,7 +48,7 @@ if file is not None:
         st.subheader(f"Clase: {selected_table}")
 
         graph_rendering.value_vs_weight_graph(df_aportes["Tarea"], df_aportes["Aporte"], df_aportes["Porcentaje"])
-
+#mensajes para situaciones referente al archivo a leer
     else:
         st.warning("No se encontraron tablas en el archivo.")
 
