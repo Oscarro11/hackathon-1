@@ -38,3 +38,23 @@ def calc_df(tables):
         dicc_df[name] = df_aportes
 
     return dicc_df
+
+def calc_final_grades(tables):
+    final_grades = {}
+
+    for name, df in tables.items():
+        try:
+            nota = pd.to_numeric(df.loc["Nota"], errors="coerce")
+            porcentaje = pd.to_numeric(df.loc["Porcentaje"], errors="coerce")
+
+            # Cálculo del promedio ponderado
+            nota_final = (nota * porcentaje / 100).sum()
+
+            final_grades[name] = nota_final
+
+        except KeyError:
+            # En caso de que falten filas esperadas
+            final_grades[name] = None
+
+    return final_grades
+

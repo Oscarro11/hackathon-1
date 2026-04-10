@@ -24,6 +24,7 @@ file = st.file_uploader("Elegir archivo de notas", type="xlsx")
 if "tables" not in st.session_state:
     st.session_state.tables = {}
     st.session_state.dataframes = {}
+    st.session_state.final_notes = {}
 
 # ---------- Main logic ----------
 if file is not None:
@@ -31,11 +32,12 @@ if file is not None:
     if st.session_state.get("last_file") != file:
         st.session_state.tables = loader_functions.load_tables(file)
         st.session_state.dataframes = loader_functions.calc_df(st.session_state.tables)
+        st.session_state.final_notes = loader_functions.calc_final_grades(st.session_state.tables)
         st.session_state.last_file = file
 
     tables = st.session_state.tables
     dataframes = st.session_state.dataframes
- # Si se encontraron tablas en el Excel
+    # Si se encontraron tablas en el Excel
     #permite seleccionar la materia a la cual queremos analizar de la tabla de datos esto lo hacemos por medio de diccionarios
     if tables:
         selected_table = st.sidebar.selectbox(
@@ -48,7 +50,9 @@ if file is not None:
         st.subheader(f"Clase: {selected_table}")
 
         graph_rendering.value_vs_weight_graph(df_aportes["Tarea"], df_aportes["Aporte"], df_aportes["Porcentaje"])
-#mensajes para situaciones referente al archivo a leer
+        graph_rendering.plot_final_grades(st.session_state.final_notes)
+    
+    #mensajes para situaciones referente al archivo a leer
     else:
         st.warning("No se encontraron tablas en el archivo.")
 
