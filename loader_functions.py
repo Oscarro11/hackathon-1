@@ -1,5 +1,8 @@
+#Primero se leen todas las hojas del archivo Excel y se guardan como tablas. Luego, 
+#se procesan los datos para calcular el aporte de cada tarea usando la fórmula nota 
+#por porcentaje dividido entre 100, generando un nuevo conjunto de datos listo para ser visualizado.
 import pandas as pd
-
+# ---------- FUNCIÓN 1: Cargar tablas ----------
 def load_tables(file):
     """Read all sheets into a dict of DataFrames."""
     excel = pd.ExcelFile(file)
@@ -15,7 +18,7 @@ def load_tables(file):
         tables[sheetname] = df
 
     return tables
-
+# ---------- FUNCIÓN 2: Procesar datos ----------
 def calc_df(tables):
     dicc_df = {}
 
